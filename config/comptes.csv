@@ -1,0 +1,11 @@
+login;nom;groupe_principal;groupes_secondaires
+support;Compte support;support;acces_ssh
+amartin;Alice Martin;admins;acces_ssh
+jdupont;Jean Dupont;dev;
+ldubois;Luc Dubois;dev;
+lbernard;Léa Bernard;design;
+mlefevre;Marc Lefevre;design;
+proussel;Paul Roussel;commercial;
+sblanc;Sophie Blanc;commercial;
+fgarcia;Fabien Garcia;freelance;
+npetit;Nina Petit;freelance;
