@@ -1,0 +1,5 @@
+# Les administrateurs ont tous les droits sudo
+%admins ALL=(ALL:ALL) ALL
+
+# Le compte support ne peut lancer que analyse_logs.sh en root
+support ALL=(root) /usr/local/sbin/analyse_logs.sh
