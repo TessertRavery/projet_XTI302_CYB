@@ -1,10 +1,12 @@
 #!/bin/bash
-# installer.sh - Deploiement complet et idempotent du serveur (Projet XTI302-CYB)
-# Usage : sudo ./installer.sh
+# scripts/installer.sh - Deploiement complet et idempotent du serveur (Projet XTI302-CYB)
+# Usage : sudo ./scripts/installer.sh
 
 set -euo pipefail
 
-DOSSIER_PROJET="$(cd "$(dirname "$0")" && pwd)"
+CHEMIN_REEL="$(readlink -f "$0")"
+DOSSIER_SCRIPT="$(cd "$(dirname "$CHEMIN_REEL")" && pwd)"
+DOSSIER_PROJET="$(cd "$DOSSIER_SCRIPT/.." && pwd)"
 POINT_MONTAGE="/mnt/sauvegardes"
 
 erreur() {
@@ -13,7 +15,7 @@ erreur() {
 }
 
 if [ "$(id -u)" -ne 0 ]; then
-    erreur "Ce script doit etre execute en root (sudo ./installer.sh)."
+    erreur "Ce script doit etre execute en root (sudo ./scripts/installer.sh)."
 fi
 
 echo "=== 1. Installation des paquets officiels Debian ==="
@@ -78,17 +80,17 @@ if ! mountpoint -q "$POINT_MONTAGE"; then
 fi
 
 echo "=== 3. Creation des comptes, groupes et ACL (C1, C2, C4) ==="
-chmod +x "$DOSSIER_PROJET/creer_comptes.sh"
-"$DOSSIER_PROJET/creer_comptes.sh" "$DOSSIER_PROJET/comptes.csv"
+chmod +x "$DOSSIER_SCRIPT/creer_comptes.sh"
+"$DOSSIER_SCRIPT/creer_comptes.sh" "$DOSSIER_PROJET/comptes.csv"
 
 # Fixer les droits B3 sur le point de montage une fois le groupe admins cree
 chown root:admins "$POINT_MONTAGE"
 chmod 750 "$POINT_MONTAGE"
 
 echo "=== 4. Installation des scripts d'administration dans /usr/local/sbin ==="
-install -m 700 -o root -g root "$DOSSIER_PROJET/analyse_logs.sh" /usr/local/sbin/analyse_logs.sh
-install -m 700 -o root -g root "$DOSSIER_PROJET/sauvegarde.sh" /usr/local/sbin/sauvegarde.sh
-install -m 700 -o root -g root "$DOSSIER_PROJET/creer_comptes.sh" /usr/local/sbin/creer_comptes.sh
+install -m 700 -o root -g root "$DOSSIER_SCRIPT/analyse_logs.sh" /usr/local/sbin/analyse_logs.sh
+install -m 700 -o root -g root "$DOSSIER_SCRIPT/sauvegarde.sh" /usr/local/sbin/sauvegarde.sh
+install -m 700 -o root -g root "$DOSSIER_SCRIPT/creer_comptes.sh" /usr/local/sbin/creer_comptes.sh
 
 echo "=== 5. Configuration de sudo et nettoyage des droits par defaut (C3, C4) ==="
 # Piege du sujet : vider le groupe sudo par defaut de Debian pour que seuls admins et support aient sudo
@@ -164,6 +166,6 @@ systemctl enable --now cron
 
 echo "=========================================================="
 echo "[SUCCES] Installation et durcissement termines."
-echo "Lancez maintenant : sudo ./verifier.sh"
+echo "Lancez maintenant : sudo ./scripts/verifier.sh"
 echo "=========================================================="
 exit 0
