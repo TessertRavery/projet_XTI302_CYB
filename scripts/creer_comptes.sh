@@ -1,12 +1,14 @@
 #!/bin/bash
-# creer_comptes.sh - Creation idempotente des comptes, groupes, cles SSH et ACL (/srv)
-# Usage : sudo ./creer_comptes.sh [chemin_vers_comptes.csv]
+# scripts/creer_comptes.sh - Creation idempotente des comptes, groupes, cles SSH et ACL (/srv)
+# Usage : sudo ./scripts/creer_comptes.sh [chemin_vers_comptes.csv]
 
 set -euo pipefail
 
-DOSSIER_SCRIPT="$(cd "$(dirname "$0")" && pwd)"
-FICHIER_CSV="${1:-$DOSSIER_SCRIPT/comptes.csv}"
-DOSSIER_CLES="$DOSSIER_SCRIPT/config/keys"
+CHEMIN_REEL="$(readlink -f "$0")"
+DOSSIER_SCRIPT="$(cd "$(dirname "$CHEMIN_REEL")" && pwd)"
+DOSSIER_PROJET="$(cd "$DOSSIER_SCRIPT/.." && pwd)"
+
+FICHIER_CSV="${1:-$DOSSIER_PROJET/comptes.csv}"
 DATE_EXPIRATION_FREELANCE="2027-06-30"
 
 usage() {
@@ -27,6 +29,10 @@ fi
 if [ ! -f "$FICHIER_CSV" ]; then
     usage
 fi
+
+# Deduire le dossier des cles SSH a partir du dossier contenant comptes.csv
+DOSSIER_RACINE_CSV="$(cd "$(dirname "$FICHIER_CSV")" && pwd)"
+DOSSIER_CLES="$DOSSIER_RACINE_CSV/config/ssh/keys"
 
 creer_groupe_si_absent() {
     local groupe="$1"
@@ -82,13 +88,13 @@ tail -n +2 "$FICHIER_CSV" | while IFS=';' read -r login nom grp_princ grp_sec; d
         chage -E "$DATE_EXPIRATION_FREELANCE" "$login"
     fi
 
-    # 7. Installation des cles publiques pour les membres de acces_ssh
+    # 7. Installation des cles publiques depuis config/ssh/keys/ pour acces_ssh
     if id -nG "$login" | grep -qw "acces_ssh"; then
         install -d -m 700 -o "$login" -g "$grp_princ" "/home/$login/.ssh"
         if [ -f "$DOSSIER_CLES/${login}.pub" ]; then
             install -m 600 -o "$login" -g "$grp_princ" \
                 "$DOSSIER_CLES/${login}.pub" "/home/$login/.ssh/authorized_keys"
-            echo "[+] Cle SSH installee pour $login"
+            echo "[+] Cle SSH installee pour $login (depuis config/ssh/keys/)"
         else
             echo "[!] Attention : fichier $DOSSIER_CLES/${login}.pub absent" >&2
         fi
