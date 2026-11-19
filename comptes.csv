@@ -1,0 +1,12 @@
+login;nom;groupe_principal;groupes_secondaires
+mgoix;Maxence Goix;admins;acces_ssh
+amartin;Alice Martin;admins;acces_ssh
+support;Compte Support;support;acces_ssh
+jdupont;Jean Dupont;dev;
+mcurie;Marie Curie;dev;
+lbernard;Lea Bernard;design;
+proux;Paul Roux;design;
+cmorel;Claire Morel;commercial;
+tleroy;Thomas Leroy;commercial;
+npetit;Nicolas Petit;freelance;
+sblanc;Sophie Blanc;freelance;
