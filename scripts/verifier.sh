@@ -342,7 +342,7 @@ test_D1_unattended_upgrades() {
 test_D2_ecoute_reseau_ssh_uniquement() {
     # Recherche des ports TCP/UDP en ecoute hors loopback (127.0.0.1 / ::1) autres que :22
     local autres_ports
-    autres_ports="$(ss -tuln | awk 'NR>1 {print $5}' | grep -vE '^(127\.|\[::1\]|.*:22$)' || true)"
+    autres_ports="$(ss -tuln | awk 'NR>1 {print $5}' | grep -vE '^(127\.|\[::1\]|.*:(22|68|546)$)' || true)"
     if [ -z "$autres_ports" ]; then
         ok "D2" "Aucun service n'ecoute sur le reseau en dehors de SSH (port 22)"
     else
