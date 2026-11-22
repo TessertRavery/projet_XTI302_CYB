@@ -34,13 +34,17 @@
 - Pour la préparation des clés SSH de test, exécutez les commandes suivantes (sur le poste hôte) :
 
 ```bash
-mkdir -p config/ssh/keys
-ssh-keygen -t ed25519 -C "mgoix@pixelia" -f /tmp/id_mgoix -N "PassphraseSolide1!"
-ssh-keygen -t ed25519 -C "amartin@pixelia" -f /tmp/id_amartin -N "PassphraseSolide2!"
-ssh-keygen -t ed25519 -C "support@pixelia" -f /tmp/id_support -N "PassphraseSupport!"
-cp /tmp/id_mgoix.pub config/ssh/keys/mgoix.pub
-cp /tmp/id_amartin.pub config/ssh/keys/amartin.pub
-cp /tmp/id_support.pub config/ssh/keys/support.pub
+rm -f ~/.ssh/cles_pixelia/id_*
+mkdir -p ~/.ssh/cles_pixelia config/ssh/keys
+chmod 700 ~/.ssh/cles_pixelia
+
+ssh-keygen -t ed25519 -C "mgoix@pixelia" -f ~/.ssh/cles_pixelia/id_mgoix -N "PassphraseSolide1!"
+ssh-keygen -t ed25519 -C "amartin@pixelia" -f ~/.ssh/cles_pixelia/id_amartin -N "PassphraseSolide2!"
+ssh-keygen -t ed25519 -C "support@pixelia" -f ~/.ssh/cles_pixelia/id_support -N "PassphraseSupport!"
+
+cp ~/.ssh/cles_pixelia/id_mgoix.pub config/ssh/keys/mgoix.pub
+cp ~/.ssh/cles_pixelia/id_amartin.pub config/ssh/keys/amartin.pub
+cp ~/.ssh/cles_pixelia/id_support.pub config/ssh/keys/support.pub
 ```
 
 ## 4. Installation automatique (reconstruction depuis le snapshot vierge)
