@@ -42,8 +42,8 @@ ssh-keygen -t ed25519 -C "amartin@pixelia" -f ~/.ssh/cles_pixelia/id_amartin -N 
 ssh-keygen -t ed25519 -C "support@pixelia" -f ~/.ssh/cles_pixelia/id_support -N "PassphraseSupport!"
 
 cp ~/.ssh/cles_pixelia/id_mgoix.pub config/ssh/keys/mgoix.pub
-cp ~/.ssh/cles_pixelia/id_amartin.pub config/ssh/keys/amartin.pub
-cp ~/.ssh/cles_pixelia/id_support.pub config/ssh/keys/support.pub
+cp ~/.ssh/cles_pixelia/id_amartin.pub config/ssh/keys/id_amartin.pub
+cp ~/.ssh/cles_pixelia/id_support.pub config/ssh/keys/id_support.pub
 ```
 
 ## 4. Installation automatique (reconstruction depuis le snapshot vierge)
