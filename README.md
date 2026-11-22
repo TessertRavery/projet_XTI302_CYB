@@ -34,7 +34,6 @@
 - Pour la préparation des clés SSH de test, exécutez les commandes suivantes (sur le poste hôte) :
 
 ```bash
-rm -f ~/.ssh/cles_pixelia/id_*
 mkdir -p ~/.ssh/cles_pixelia config/ssh/keys
 chmod 700 ~/.ssh/cles_pixelia
 
