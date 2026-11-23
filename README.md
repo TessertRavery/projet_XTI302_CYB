@@ -56,3 +56,7 @@ cd ~/projet-xti302
 chmod +x scripts/*.sh
 sudo ./scripts/installer.sh
 ```
+
+---
+
+> **Note sur les outils utilisés :** Des outils d'intelligence artificielle générative ont été utilisés ponctuellement en complément de la documentation officielle pour l'aide à la syntaxe Bash, la vérification des expressions régulières et la relecture de la documentation. L'ensemble des scripts et configurations a été testé, débuggé et validé sur une VM Debian 13.
